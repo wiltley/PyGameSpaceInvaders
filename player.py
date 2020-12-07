@@ -1,0 +1,22 @@
+import sys, pygame
+
+class player:
+    def __init__(self, size):
+        self.entity = pygame.image.load("ship.png")
+        self.entity = pygame.transform.scale(self.entity, (102,72))
+        self.entity = pygame.transform.rotate(self.entity, 180)
+        self.rect = self.entity.get_rect()
+        self.rect = self.rect.move(800,870)
+        self.speed = [1, 0]
+        self.moveRight = 0
+        self.moveLeft = 0
+        self.lives = 5
+    def move(self, dir):
+        if(self.rect.left == 0):
+            self.rect = self.rect.move(5,0)
+        elif(self.rect.right == 300):
+            self.rect = self.rect.move(-10,0)
+        else:
+            self.rect = self.rect.move(dir,0)
+    def gotHit(self):
+        self.lives-=1
