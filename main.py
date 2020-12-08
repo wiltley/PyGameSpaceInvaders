@@ -1,17 +1,18 @@
-import math, random, sys, time, pygame, bullet, enemy, enemyBullets, player
+import math, random, sys, time, pygame, bullet, enemy, enemyBullets, player, hud
 
 pygame.init()
-size = width, height = 1920, 1080
+size = width, height = 1080, 1080
 screen = pygame.display.set_mode(size)
 pygame.display.set_caption('Avoiding Game!')
 background = pygame.image.load("background.jpg")
 player = player.player(size)
 playerBullets = bullet.playerProjecticleList(player)
 enemyBullet = enemyBullets.enemyProjecticleList()
-enemies = enemy.enemyList(10)
+enemies = enemy.enemyList(35)
 clock = pygame.time.Clock()
 currentTime = time.time()
-enemies.createEnemy()
+hud = hud.hud()
+gameRunning = 0
 
 while 1:
     # IF QUIT AND MOVEMENT
@@ -24,8 +25,14 @@ while 1:
             if event.key == pygame.K_LEFT:
                 player.moveLeft = 1
                 player.moveRight = 0
-            if event.key == pygame.K_SPACE:
-                playerBullets.createBullet()      
+            if event.key == pygame.K_SPACE and gameRunning == 1:
+                playerBullets.createBullet()     
+            if event.key == pygame.K_SPACE and gameRunning == 0:
+                gameRunning = 1
+                player.reset()
+                hud.updateHud(player)
+                enemies.createEnemy()
+                
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
                 player.moveLeft = 0
@@ -36,30 +43,48 @@ while 1:
     if(player.moveLeft == 1):
         player.move(-5)
     
-    # CREATES NEW ENEMY BULLETS RANDOMLY
-    x = 0
-    for x in enemies.enemyArray:
-        enemyBullet.createBullet(x)
-    # MOVES EVERYONE
-    enemies.moveAll(playerBullets.playerProjectileArray)
-    playerBullets.moveAll()
-    enemyBullet.moveAll(player)
-    # TO REMOVE THE OLD IMAGE OF THE MOVED ENEMIES/PLAYER
+
     screen.blit(background, background.get_rect())
-    # DRAWS ALL PLAYER BULLETS
-    x = 0
-    for x in playerBullets.playerProjectileArray:
-        screen.blit(x.entity, x.rect)
-    # DRAWS ALL ENEMY BULLETS
-    x = 0
-    for x in enemyBullet.enemyProjectileArray:
-        screen.blit(x.entity, x.rect)
-    # DRAWS ALL ENEMIES
-    x = 0
-    for x in enemies.enemyArray:
-        screen.blit(x.entity, x.rect)
+    # CREATES NEW ENEMY BULLETS RANDOMLY
+    if gameRunning == 1:
+        x = 0
+        for x in enemies.enemyArray:
+            enemyBullet.createBullet(x)
+        # MOVES EVERYONE
+        enemies.moveAll(playerBullets.playerProjectileArray, player)
+        enemyBullet.moveAll(player)
+        # TO REMOVE THE OLD IMAGE OF THE MOVED ENEMIES/PLAYER
+
+        # DRAWS ALL PLAYER BULLETS
+        playerBullets.moveAll()
+        x = 0
+        for x in playerBullets.playerProjectileArray:
+            screen.blit(x.entity, x.rect)
+        # DRAWS ALL ENEMY BULLETS
+        x = 0
+        for x in enemyBullet.enemyProjectileArray:
+            screen.blit(x.entity, x.rect)
+        # DRAWS ALL ENEMIES
+        x = 0
+        for x in enemies.enemyArray:
+            screen.blit(x.entity, x.rect)
+        
+        if player.lives <= 0:
+            gameRunning = 0
+
+    
+    if gameRunning == 0:
+        screen.blit(hud.startMessage,hud.startMessageRect)      
+        enemies.enemyArray = []  
+        enemyBullet.enemyProjectileArray = []
+        playerBullets.playerProjectileArray = []
     # DRAWS PLAYER
     screen.blit(player.entity, player.rect)
     # REFRESHES EVERYTHING
+    hud.updateHud(player)
+    screen.blit(hud.health, hud.healthrect)
+    screen.blit(hud.score, hud.scoreRect)
+    screen.blit(hud.highscore, hud.highscoreRect)
+
     pygame.display.flip()
     clock.tick(120)
