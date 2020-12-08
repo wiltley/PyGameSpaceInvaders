@@ -2,9 +2,8 @@ import sys, pygame
 
 class player:
     def __init__(self, size):
-        self.entity = pygame.image.load("ship.png")
-        self.entity = pygame.transform.scale(self.entity, (102,72))
-        self.entity = pygame.transform.rotate(self.entity, 180)
+        self.entity = pygame.image.load("player.png").convert_alpha()
+        self.entity = pygame.transform.scale(self.entity, (92,106))
         self.rect = self.entity.get_rect()
         self.rect = self.rect.move(800,870)
         self.speed = [1, 0]
