@@ -1,13 +1,10 @@
 import math, random, sys, time, pygame, bullet, enemy, enemyBullets, player
 
 pygame.init()
-
 size = width, height = 1920, 1080
 screen = pygame.display.set_mode(size)
-
 pygame.display.set_caption('Avoiding Game!')
 background = pygame.image.load("background.jpg")
-
 player = player.player(size)
 playerBullets = bullet.playerProjecticleList(player)
 enemyBullet = enemyBullets.enemyProjecticleList()
@@ -15,7 +12,6 @@ enemies = enemy.enemyList(10)
 clock = pygame.time.Clock()
 currentTime = time.time()
 enemies.createEnemy()
-
 
 while 1:
     # IF QUIT AND MOVEMENT
