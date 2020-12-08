@@ -1,11 +1,13 @@
 import sys, pygame
 
-class player:
+class player(pygame.sprite.Sprite):
     def __init__(self, size):
+        super().__init__()
         self.entity = pygame.image.load("player.png").convert_alpha()
         self.entity = pygame.transform.scale(self.entity, (92,106))
         self.rect = self.entity.get_rect()
         self.rect = self.rect.move(800,870)
+        self.mask = pygame.mask.from_surface(self.entity)
         self.speed = [1, 0]
         self.moveRight = 0
         self.moveLeft = 0

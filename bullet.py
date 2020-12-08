@@ -1,7 +1,8 @@
 import pygame
 
-class playerProjectiles:
+class playerProjectiles(pygame.sprite.Sprite):
     def __init__(self, x):
+        super().__init__()
         self.entity = pygame.image.load("player_bullet.png").convert_alpha()
         self.rect = self.entity.get_rect()
         self.rect = self.rect.move(x.rect.left+29, x.rect.top-50)

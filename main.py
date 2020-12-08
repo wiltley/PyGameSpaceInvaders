@@ -36,19 +36,21 @@ while 1:
     if(player.moveLeft == 1):
         player.move(-5)
     
+    # CREATES NEW ENEMY BULLETS RANDOMLY
     x = 0
     for x in enemies.enemyArray:
         enemyBullet.createBullet(x)
-    
+    # MOVES EVERYONE
     enemies.moveAll(playerBullets.playerProjectileArray)
     playerBullets.moveAll()
-    enemyBullet.moveAll()
+    enemyBullet.moveAll(player)
     # TO REMOVE THE OLD IMAGE OF THE MOVED ENEMIES/PLAYER
     screen.blit(background, background.get_rect())
-    # DRAWS ALL BULLETS
+    # DRAWS ALL PLAYER BULLETS
     x = 0
     for x in playerBullets.playerProjectileArray:
         screen.blit(x.entity, x.rect)
+    # DRAWS ALL ENEMY BULLETS
     x = 0
     for x in enemyBullet.enemyProjectileArray:
         screen.blit(x.entity, x.rect)
@@ -61,4 +63,3 @@ while 1:
     # REFRESHES EVERYTHING
     pygame.display.flip()
     clock.tick(120)
-
