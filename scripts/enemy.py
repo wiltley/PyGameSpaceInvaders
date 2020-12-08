@@ -5,7 +5,7 @@ class enemy(pygame.sprite.Sprite):
         super().__init__()
 
         randomEntity = []
-        randomEntity = [pygame.image.load("spaceinvader1.png").convert_alpha(), pygame.image.load("spaceinvader2.png").convert_alpha(), pygame.image.load("spaceinvader3.png").convert_alpha()]
+        randomEntity = [pygame.image.load("../assets/spaceinvader1.png").convert_alpha(), pygame.image.load("../assets/spaceinvader2.png").convert_alpha(), pygame.image.load("../assets/spaceinvader3.png").convert_alpha()]
         self.entity = randomEntity[random.randint(0,2)]
         self.entity = pygame.transform.scale(self.entity, (87,63))
         self.rect = self.entity.get_rect()
@@ -14,19 +14,18 @@ class enemy(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.entity)
         self.moveDirection = 5
 class enemyList:
-    def __init__(self,wave):
-        self.wave = wave
+    def __init__(self):
         self.enemyArray = []
         self.moveDir = 5
         self.spawnY = 100
-    def createEnemy(self):
+    def createEnemy(self,wave):
         x = 0
         y = 100
-        for x in range(0, self.wave):
+        for x in range(0, wave):
             self.enemyArray.append(enemy(x*100, self.spawnY))
             if len(self.enemyArray)%10 == 0:
                 self.spawnY += 100
-
+        self.spawnY = 100
     def moveAll(self, bulletArray, player):
         x = 0
         for x in self.enemyArray:
