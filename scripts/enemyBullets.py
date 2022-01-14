@@ -35,3 +35,4 @@ class enemyProjecticleList:
             if(player.mask.overlap_area(bullet.mask, (offset_x, offset_y))):
                 self.enemyProjectileArray.remove(bullet)
                 player.lives -= 1
+                print(player.lives)

@@ -22,6 +22,7 @@ class player(pygame.sprite.Sprite):
             self.rect = self.rect.move(-10,0)
         else:
             self.rect = self.rect.move(dir,0)
+            print(self.score)
     def gotHit(self):
         self.lives-=1
 
